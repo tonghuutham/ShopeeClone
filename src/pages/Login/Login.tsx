@@ -15,16 +15,17 @@ export default function Login() {
                   className='w-full border border-gray-200 p-3 outline-none focus:border-gray-400 focus:shadow-sm'
                   placeholder='Email'
                 />
-                {/* <div className='mt-1 min-h-[1rem] text-sm text-red-600'>Email không hợp lệ</div> */}
+                {/* <div className='mt-1 min-h-[1.25rem] text-sm text-red-600'>Email không hợp lệ</div> */}
               </div>
               <div className='mt-3'>
                 <input
                   type='password'
+                  autoComplete='on'
                   name='password'
                   className='w-full border border-gray-200 p-3 outline-none focus:border-gray-400 focus:shadow-sm'
                   placeholder='Password'
                 />
-                {/* <div className='mt-1 min-h-[1rem] text-sm text-red-600'></div> */}
+                {/* <div className='mt-1 min-h-[1.25rem] text-sm text-red-600'></div> */}
               </div>
               <div className='mt-3'>
                 <button className='w-full bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'>

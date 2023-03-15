@@ -1,31 +1,35 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { omit } from 'lodash'
 import Input from 'src/components/Input'
-import { rules } from 'src/utils/rules'
+import { schema, Shema } from 'src/utils/rules'
+import { registerAccount } from 'src/apis/auth.api'
 
-interface FormData {
-  email: string
-  password: string
-  confirm_password: string
-}
+type FormData = Shema
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors }
-  } = useForm<FormData>()
-  const onSubmit = handleSubmit(
-    (data) => {
-      // console.log(data)
-    },
-    (data) => {
-      const password = getValues('password')
-      // console.log(password)
-    }
-  )
+  } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  })
+
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password'])
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+      }
+    })
+  })
   // console.log('erros', errors)
 
   return (
@@ -42,7 +46,6 @@ export default function Register() {
                 register={register}
                 name='email'
                 errorMessage={errors.email?.message}
-                rules={rules.email}
               />
               <Input
                 className='mt-2'
@@ -51,10 +54,9 @@ export default function Register() {
                 register={register}
                 name='password'
                 errorMessage={errors.password?.message}
-                rules={rules.password}
               />
 
-              <div className='mt-2'>
+              {/* <div className='mt-2'>
                 <input
                   type='password'
                   autoComplete='on'
@@ -66,7 +68,17 @@ export default function Register() {
                   })}
                 />
                 <div className='mt-1 min-h-[1.25rem] text-sm text-red-600'>{errors.confirm_password?.message}</div>
-              </div>
+              </div> */}
+
+              <Input
+                name='confirm_password'
+                register={register}
+                type='password'
+                className='mt-2'
+                errorMessage={errors.confirm_password?.message}
+                placeholder='Confirm Password'
+                autoComplete='on'
+              />
 
               <div className='mt-2'>
                 <button

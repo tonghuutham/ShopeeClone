@@ -23,6 +23,9 @@ export default function Login() {
     resolver: yupResolver(loginSchema)
   })
 
+  // React Query có hook useMutation mà bạn có thể sử dụng để cập nhật / tạo / xóa dữ liệu.
+  //useMutation cung cấp cho bạn quyền truy cập vào hàm mutate mà chúng ta có thể chuyển các đối số cần thiết.
+  //Sau đó nó trả về thông tin về trạng thái của lệnh gọi API của chúng ta.
   const loginMutation = useMutation({
     mutationFn: (body: FormData) => login(body)
   })

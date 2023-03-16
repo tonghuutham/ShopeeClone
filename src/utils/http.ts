@@ -11,6 +11,8 @@ class Http {
         'Content-Type': 'application/json'
       }
     })
+
+    // Add a response interceptor
     this.instance.interceptors.response.use(
       function (response) {
         return response

@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
+import { Omit, omit } from 'lodash'
 import Input from 'src/components/Input'
 import { schema, Shema } from 'src/utils/rules'
 import { registerAccount } from 'src/apis/auth.api'
+import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { ResponseApi } from 'src/types/utils.type'
 
 type FormData = Shema
 
@@ -14,6 +16,7 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(schema)
@@ -27,6 +30,23 @@ export default function Register() {
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
         console.log(data)
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntity<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+          const formError = error?.response?.data.data
+          if (formError?.email) {
+            setError('email', {
+              message: formError.email,
+              type: 'Server'
+            })
+          }
+          if (formError?.password) {
+            setError('email', {
+              message: formError.password,
+              type: 'Server'
+            })
+          }
+        }
       }
     })
   })

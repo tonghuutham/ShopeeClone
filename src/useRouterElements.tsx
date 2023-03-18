@@ -1,10 +1,25 @@
 import React from 'react'
-import { useRoutes } from 'react-router-dom'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import RegisterLayout from './layouts/RegisterLayout'
 import Login from './pages/Login'
 import ProductList from './pages/ProductList'
+import Profile from './pages/Profile'
 import Register from './pages/Register'
+
+// xét quyền truy cập : đã login hay chưa . Nếu chưa thì bắt login . đã login rồi thì k cần đến trang login và register nữa
+const isAuthenticated = true
+function ProtectedRoute() {
+  //đã login
+  // const isAuthenticated = true
+  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+}
+
+function RejectedRoute() {
+  //chưa login
+  // const isAuthenticated = false
+  return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
+}
 
 export default function useRouterElements() {
   const routerElement = useRoutes([
@@ -17,20 +32,40 @@ export default function useRouterElements() {
       )
     },
     {
-      path: '/login',
-      element: (
-        <RegisterLayout>
-          <Login />
-        </RegisterLayout>
-      )
+      path: '',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: '/profile',
+          element: (
+            <MainLayout>
+              <Profile />
+            </MainLayout>
+          )
+        }
+      ]
     },
     {
-      path: '/register',
-      element: (
-        <RegisterLayout>
-          <Register />
-        </RegisterLayout>
-      )
+      path: '',
+      element: <RejectedRoute />,
+      children: [
+        {
+          path: '/login',
+          element: (
+            <RegisterLayout>
+              <Login />
+            </RegisterLayout>
+          )
+        },
+        {
+          path: '/register',
+          element: (
+            <RegisterLayout>
+              <Register />
+            </RegisterLayout>
+          )
+        }
+      ]
     }
   ])
   return routerElement

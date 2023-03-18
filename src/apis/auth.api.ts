@@ -6,3 +6,7 @@ export const registerAccount = (body: { email: string; password: string }) => ht
 
 //login
 export const login = (body: { email: string; password: string }) => http.post<AuthResponse>('/login', body)
+
+//logout
+
+export const logout = () => http.post('/logout')

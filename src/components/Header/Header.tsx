@@ -99,7 +99,7 @@ export default function Header() {
           )}
 
           {!isAuthenticated && (
-            <div className='flex items-center'>
+            <div className='flex items-center hover:text-gray-300'>
               <Link to='/register' className='mx-3 capitalize hover:text-white '>
                 Đăng kí
               </Link>

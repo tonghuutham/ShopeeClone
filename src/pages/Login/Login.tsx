@@ -10,13 +10,14 @@ import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
 
 type FormData = Omit<Shema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
   const { setIsAuthenticated } = useContext(AppContext)
-  const navigate = useNavigate()
+  const navigate = useNavigate() // chuyển trang
   const {
     register,
     handleSubmit,
@@ -36,7 +37,7 @@ export default function Login() {
     loginMutation.mutate(data, {
       onSuccess: () => {
         setIsAuthenticated(true)
-        navigate('/')
+        navigate('/') // login xong thì chuyển qua trang home
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntity<ErrorResponse<FormData>>(error)) {
@@ -106,9 +107,13 @@ export default function Login() {
                 errorMessage={errors.password?.message}
               />
               <div className='mt-2'>
-                <button className='w-full bg-red-500 py-4 px-2 text-center text-sm uppercase text-white hover:bg-red-600'>
+                <Button
+                  className='flex  w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                  isLoading={loginMutation.isLoading}
+                  disabled={loginMutation.isLoading}
+                >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
 
               <div className='mt-8 flex items-center justify-center'>

@@ -11,12 +11,13 @@ import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
+import path from 'src/constants/path'
 
 type FormData = Omit<Shema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate() // chuyển trang
   const {
     register,
@@ -35,8 +36,9 @@ export default function Login() {
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/') // login xong thì chuyển qua trang home
       },
       onError: (error) => {
@@ -118,7 +120,7 @@ export default function Login() {
 
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-slate-400'>Bạn mới biết đến Shopee ? </span>
-                <Link to='/register' className='text-red-400'>
+                <Link to={path.register} className='text-red-400'>
                   Đăng ký
                 </Link>
               </div>

@@ -11,11 +11,12 @@ import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
+import path from 'src/constants/path'
 
 type FormData = Shema
 
 export default function Register() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate() // chuyển trang
   const {
     register,
@@ -32,8 +33,9 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
       onError: (error) => {
@@ -118,7 +120,7 @@ export default function Register() {
 
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-slate-400'>Bạn đã có tài khoản ? </span>
-                <Link to='/login' className='text-red-400'>
+                <Link to={path.login} className='text-red-400'>
                   Đăng nhập
                 </Link>
               </div>

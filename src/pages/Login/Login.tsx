@@ -5,7 +5,7 @@ import { Omit } from 'lodash'
 import { schema, Shema } from 'src/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { login } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
@@ -32,7 +32,7 @@ export default function Login() {
   //useMutation cung cấp cho bạn quyền truy cập vào hàm mutate mà chúng ta có thể chuyển các đối số cần thiết.
   //Sau đó nó trả về thông tin về trạng thái của lệnh gọi API của chúng ta.
   const loginMutation = useMutation({
-    mutationFn: (body: FormData) => login(body)
+    mutationFn: (body: FormData) => authApi.login(body)
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {

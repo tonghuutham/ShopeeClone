@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Omit, omit } from 'lodash'
 import Input from 'src/components/Input'
 import { schema, Shema } from 'src/utils/rules'
-import { registerAccount } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
@@ -28,7 +28,7 @@ export default function Register() {
   })
 
   const registerAccountMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])

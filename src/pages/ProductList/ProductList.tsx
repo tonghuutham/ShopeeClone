@@ -41,11 +41,14 @@ export default function ProductList() {
       <div className='container'>
         {data && (
           <div className='grid grid-cols-12 gap-6'>
+            {/* AsideFilter */}
             <div className='col-span-3'>
               <AsideFilter />
             </div>
+            {/* SortProductList */}
             <div className='col-span-9'>
-              <SortProductList />
+              <SortProductList queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size} />
+              {/* Product */}
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {data.data.data.products.map((product) => (
                   <div className='col-span-1' key={product._id}>
@@ -53,6 +56,7 @@ export default function ProductList() {
                   </div>
                 ))}
               </div>
+              {/* Pagination */}
               <Pagination queryConfig={queryConfig} pageSize={data?.data.data.pagination.page_size} />
             </div>
           </div>

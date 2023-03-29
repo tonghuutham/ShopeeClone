@@ -1,13 +1,29 @@
-import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+import { createSearchParams, Link } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
+import { Category } from 'src/types/category.type'
+import { QueryConfig } from '../ProductList'
 
-export default function AsideFilter() {
+interface Props {
+  queryConfig: QueryConfig
+  categories: Category[]
+}
+
+export default function AsideFilter({ queryConfig, categories }: Props) {
+  const { category } = queryConfig
+  // console.log(category, categories)
+
   return (
     <div className='py-4'>
       {/* Tất Cả Danh Mục */}
-      <Link to={path.home} className='flex items-center font-bold'>
+      <Link
+        to={path.home}
+        className={classNames('flex items-center font-bold', {
+          'text-orange': !category
+        })}
+      >
         <svg viewBox='0 0 12 10' className='mr-4 h-4 w-4 fill-current '>
           <g fillRule='evenodd' stroke='none' strokeWidth='1'>
             <g transform='translate(-373 -208)'>
@@ -26,34 +42,32 @@ export default function AsideFilter() {
       <div className='my-4 h-[1px] bg-gray-300' />
 
       <ul className='mb-3'>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative flex px-2 font-semibold text-orange'>
-            <svg viewBox='0 0 4 7' className='absolute top-1 left-[-10px] h-3 w-3 fill-orange '>
-              <polygon points='4 3.5 0 0 0 7'></polygon>
-            </svg>
-            Thời Trang Nam
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative  px-2'>
-            Áo Khoác
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative  px-2'>
-            Áo Vest và Blazer
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative  px-2'>
-            Áo Hoodie, Áo Len & Áo Nỉ
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative  px-2'>
-            Quần Jeans
-          </Link>
-        </li>
+        {categories.map((categoryItem) => {
+          const isActive = categoryItem._id === category
+          return (
+            <li className='py-2 pl-2' key={categoryItem._id}>
+              <Link
+                to={{
+                  pathname: path.home,
+                  search: createSearchParams({
+                    ...queryConfig,
+                    category: categoryItem._id
+                  }).toString()
+                }}
+                className={classNames('relative flex px-2  ', {
+                  'font-semibold text-orange': isActive
+                })}
+              >
+                {isActive && (
+                  <svg viewBox='0 0 4 7' className='absolute top-1 left-[-10px] h-3 w-3 fill-orange '>
+                    <polygon points='4 3.5 0 0 0 7'></polygon>
+                  </svg>
+                )}
+                {categoryItem.name}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
 
       {/* Bộ lọc tìm kiếm */}

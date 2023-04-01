@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import Input from 'src/components/Input'
 import { useForm } from 'react-hook-form'
-import { Omit } from 'lodash'
-import { schema, Shema } from 'src/utils/rules'
+
+import { schema, Schema } from 'src/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 import authApi from 'src/apis/auth.api'
@@ -13,8 +13,8 @@ import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 
-type FormData = Omit<Shema, 'confirm_password'>
-const loginSchema = schema.omit(['confirm_password'])
+type FormData = Pick<Schema, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)

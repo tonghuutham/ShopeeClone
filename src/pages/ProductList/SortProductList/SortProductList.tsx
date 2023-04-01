@@ -106,6 +106,8 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
             </option>
           </select>
         </div>
+
+        {/* Chuyển trang vd 1/3  */}
         <div className='flex items-center'>
           <div>
             <span className='text-orange'>{page}</span>

@@ -1,19 +1,67 @@
 import classNames from 'classnames'
-import { createSearchParams, Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
-import Input from 'src/components/Input'
+import { useForm, Controller } from 'react-hook-form'
+import InputNumber from 'src/components/InputNumber'
 import path from 'src/constants/path'
 import { Category } from 'src/types/category.type'
 import { QueryConfig } from '../ProductList'
+import { schema, Schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUndefinedField } from 'src/types/utils.type'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
+type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
+
+const priceSchema = schema.pick(['price_min', 'price_max'])
+
+/**
+- Rule validation
++ Nếu có cả price_min và price_max thì điểu kiện phải là price_min <= price_max
++ Nếu có 1 trong 2 thì luôn thỏa mãn  
+
+-Dùng PICK : Chỉ lấy 1 số giá trị nhất định
+-Dùng omit : Loại bỏ 1 số giá trị
+ */
+
 export default function AsideFilter({ queryConfig, categories }: Props) {
   const { category } = queryConfig
   // console.log(category, categories)
+
+  const {
+    control,
+    watch,
+    handleSubmit,
+    trigger,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      price_min: '',
+      price_max: ''
+    },
+    resolver: yupResolver(priceSchema),
+    shouldFocusError: false
+  })
+  const navigate = useNavigate()
+
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    })
+  })
+
+  const valueForm = watch()
+  // console.log(valueForm)
+  // console.log(errors)
 
   return (
     <div className='py-4'>
@@ -94,24 +142,54 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
         <div>Khoảng giá</div>
-        <form className='mt-2'>
+        <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            <Input
-              classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
-              placeholder='đ Từ'
-              type='text'
-              className='grow'
-              name='from'
+            <Controller
+              control={control}
+              name='price_min'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
+                    placeholder='đ Từ'
+                    classNameError='hidden'
+                    type='text'
+                    className='grow'
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_max') // trigger của react-hoock-form :xác thực đầu vào phụ thuộc vào giá trị của đầu vào khác)
+                    }}
+                    value={field.value}
+                    ref={field.ref}
+                  />
+                )
+              }}
             />
+
             <div className='mx-2 mt-2 shrink-0'>-</div>
-            <Input
-              classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
-              placeholder='đ Đến'
-              type='text'
-              className='grow'
-              name='to'
+            <Controller
+              control={control}
+              name='price_max'
+              render={({ field }) => {
+                return (
+                  <InputNumber
+                    classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
+                    placeholder='đ Đến'
+                    type='text'
+                    classNameError='hidden'
+                    className='grow'
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_min') // trigger của react-hoock-form :xác thực đầu vào phụ thuộc vào giá trị của đầu vào khác)
+                    }}
+                    value={field.value}
+                    ref={field.ref}
+                  />
+                )
+              }}
             />
           </div>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-orange '>{errors.price_min?.message}</div>
           <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/75'>
             Áp Dụng
           </Button>

@@ -8,7 +8,7 @@ export interface Product {
   sold: number
   view: number
   name: string
-  decription: string
+  description: string
   category: {
     _id: string
     name: string

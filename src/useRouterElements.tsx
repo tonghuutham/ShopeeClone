@@ -7,6 +7,8 @@ import Login from './pages/Login'
 import ProductList from './pages/ProductList'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+import path from './constants/path'
+import ProductDetail from './pages/ProductDetail'
 
 // xét quyền truy cập : đã login hay chưa . Nếu chưa thì bắt login . đã login rồi thì k cần đến trang login và register nữa
 
@@ -35,6 +37,14 @@ export default function useRouterElements() {
       )
     },
     {
+      path: path.productDetail,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      )
+    },
+    {
       path: '',
       element: <ProtectedRoute />,
       children: [
@@ -53,7 +63,7 @@ export default function useRouterElements() {
       element: <RejectedRoute />,
       children: [
         {
-          path: '/login',
+          path: path.login,
           element: (
             <RegisterLayout>
               <Login />
@@ -61,7 +71,7 @@ export default function useRouterElements() {
           )
         },
         {
-          path: '/register',
+          path: path.register,
           element: (
             <RegisterLayout>
               <Register />

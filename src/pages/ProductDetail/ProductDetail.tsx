@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
@@ -21,6 +20,9 @@ export default function ProductDetail() {
 
   const [curentIndexImages, setCurrentIndexImages] = useState([0, 5]) // xet slide 5 ảnh
   const [activeImage, setActiveImage] = useState('') // hover chuột vào ảnh slide thì nó sẽ active
+
+  const imageRef = useRef<HTMLImageElement>(null)
+
   const currentImages = useMemo(
     () => (product ? product.images.slice(...curentIndexImages) : []),
     [product, curentIndexImages]
@@ -52,6 +54,32 @@ export default function ProductDetail() {
     }
   }
 
+  //hover chuột vào ảnh thì ảnh sẽ zoom
+
+  const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = event.currentTarget.getBoundingClientRect() // lấy ra được chiều cao chiều rộng của thẻ dev
+    // console.log(rect)
+
+    const image = imageRef.current as HTMLImageElement
+    const { naturalHeight, naturalWidth } = image
+    const { offsetX, offsetY } = event.nativeEvent // offsetX ,offsetY là vị trí của con trỏ chuột khi hover vào ảnh
+    // console.log(offsetX, offsetY)
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+    //bubble event : là khi hover vào element con thì cũng đang hover vào element cha dẫn đến hiện tượng GIẬT
+    //Giải quyết : Thêm 'pointer-events-none' vào class con ngay sau cha cần hover
+  }
+
+  // khi k hover chuột nữa thì reset ảnh về vị trí ban đàu
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style')
+  }
+
   if (!product) return null
 
   return (
@@ -60,11 +88,16 @@ export default function ProductDetail() {
         <div className='bg-white p-4 shadow '>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] shadow'>
+              <div
+                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
+                onMouseMove={handleZoom}
+                onMouseLeave={handleRemoveZoom}
+              >
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+                  className='pointer-events-none absolute top-0 left-0 h-full w-full bg-white object-cover'
+                  ref={imageRef}
                 />
               </div>
               <div className='relative mt-4 grid grid-cols-5 gap-1'>

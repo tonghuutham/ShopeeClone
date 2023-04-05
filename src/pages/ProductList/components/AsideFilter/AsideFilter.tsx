@@ -36,7 +36,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
 
   const {
     control,
-    watch,
+    // watch,
     handleSubmit,
     trigger,
     formState: { errors }
@@ -61,7 +61,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     })
   })
 
-  const valueForm = watch()
+  // const valueForm = watch()
   // console.log(valueForm)
   // console.log(errors)
 

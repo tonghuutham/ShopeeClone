@@ -4,13 +4,14 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
-import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
+import QuantityController from 'src/components/QuantityController'
 
 export default function ProductDetail() {
+  const [buyCount, setBuyCount] = useState(1)
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
   const { data: ProductDetailData } = useQuery({
@@ -39,7 +40,6 @@ export default function ProductDetail() {
     enabled: Boolean(product),
     staleTime: 3 * 60 * 1000 //3 phút   Cơ chế caching
   })
-  console.log(productsData)
 
   // console.log(currentImages)
   useEffect(() => {
@@ -91,6 +91,11 @@ export default function ProductDetail() {
   // khi k hover chuột nữa thì reset ảnh về vị trí ban đàu
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style')
+  }
+
+  // handle số lượng mua
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
   }
 
   if (!product) return null
@@ -192,42 +197,19 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <div className='ml-10 flex items-center'>
-                  <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600 '>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M18 12H6' />
-                    </svg>
-                  </button>
 
-                  <InputNumber
-                    value={1}
-                    className=''
-                    classNameError='hidden'
-                    classNameInput='border-b h-8 w-14 border-t border-gray-300 p-1 text-center  outline-none'
-                  />
-
-                  <button className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600 '>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-                    </svg>
-                  </button>
-                </div>
+                {/* // QuantityController */}
+                <QuantityController
+                  onIncrease={handleBuyCount}
+                  onDecrease={handleBuyCount}
+                  onType={handleBuyCount}
+                  max={product.quantity}
+                  value={buyCount}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} số lượng có sẵn</div>
               </div>
+
+              {/* // Thêm vào giỏ hàng + Mua ngay */}
               <div className='mt-8 flex items-center'>
                 <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-opacity-10 px-5 capitalize text-orange shadow-sm hover:bg-opacity-5'>
                   <svg

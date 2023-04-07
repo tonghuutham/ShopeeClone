@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -9,6 +9,10 @@ import { Product as ProductType, ProductListConfig } from 'src/types/product.typ
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/apis/purchase.api'
+
+import { purchaseStatus } from 'src/constants/purchase'
+import { toast } from 'react-toastify'
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -40,6 +44,9 @@ export default function ProductDetail() {
     enabled: Boolean(product),
     staleTime: 3 * 60 * 1000 //3 phút   Cơ chế caching
   })
+
+  //addToCartMutation
+  const addToCartMutation = useMutation(purchaseApi.addToCart)
 
   // console.log(currentImages)
   useEffect(() => {
@@ -96,6 +103,22 @@ export default function ProductDetail() {
   // handle số lượng mua
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
+  }
+
+  //addToCart
+  const queryClient = useQueryClient() // queryClient của main.tsx
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 2000 }) // khi thêm vào giỏ hàng thành công thì nó sẽ hiện ra div thêm sản phẩm thành công  ,autoClose : thời gian div chạy nhanh hay chậm
+          queryClient.invalidateQueries({
+            queryKey: ['purchases', { status: purchaseStatus.inCart }]
+          })
+        }
+      }
+    )
   }
 
   if (!product) return null
@@ -211,7 +234,10 @@ export default function ProductDetail() {
 
               {/* // Thêm vào giỏ hàng + Mua ngay */}
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-opacity-10 px-5 capitalize text-orange shadow-sm hover:bg-opacity-5'>
+                <button
+                  onClick={addToCart}
+                  className='flex h-12 items-center justify-center rounded-sm border border-orange bg-opacity-10 px-5 capitalize text-orange shadow-sm hover:bg-opacity-5'
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'

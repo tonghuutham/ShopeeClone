@@ -11,6 +11,7 @@ import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStar from '../RatingStars'
 import { omit } from 'lodash'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import InputV2 from 'src/components/InputV2'
 
 interface Props {
   queryConfig: QueryConfig
@@ -175,6 +176,20 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 )
               }}
             />
+
+            {/* InputV2 : chỉ sử dụng khi dùng 'react-hook-form' */}
+            {/* <InputV2
+              control={control}
+              name='price_min'
+              classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
+              placeholder='đ Từ'
+              classNameError='hidden'
+              type='text'
+              className='grow'
+              onChange={() => {
+                trigger('price_max') // trigger của react-hoock-form :xác thực đầu vào phụ thuộc vào giá trị của đầu vào khác)
+              }}
+            /> */}
 
             <div className='mx-2 mt-2 shrink-0'>-</div>
             <Controller

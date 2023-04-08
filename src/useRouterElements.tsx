@@ -9,6 +9,7 @@ import Profile from './pages/Profile'
 import Register from './pages/Register'
 import path from './constants/path'
 import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
 
 // xét quyền truy cập : đã login hay chưa . Nếu chưa thì bắt login . đã login rồi thì k cần đến trang login và register nữa
 
@@ -49,10 +50,18 @@ export default function useRouterElements() {
       element: <ProtectedRoute />,
       children: [
         {
-          path: '/profile',
+          path: path.profile,
           element: (
             <MainLayout>
               <Profile />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.cart,
+          element: (
+            <MainLayout>
+              <Cart />
             </MainLayout>
           )
         }

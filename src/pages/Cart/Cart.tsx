@@ -1,5 +1,8 @@
-import { useQueryClient, useQuery } from '@tanstack/react-query'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
+// eslint-disable-next-line import/no-named-as-default
 import produce from 'immer'
+import { keyBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
@@ -18,7 +21,7 @@ interface ExtendedPurchase extends Purchase {
 export default function Cart() {
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([]) //state checked
   const queryClient = useQueryClient() // queryClient của main.tsx
-  const { data: purchasesInCartData } = useQuery({
+  const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: purchaseStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchaseStatus.inCart })
   })
@@ -27,21 +30,32 @@ export default function Cart() {
 
   const isAllChecked = extendedPurchases.every((purchase) => purchase.checked) // All checked hoặc All không checked
 
+  // update Purchase Input
+  const updatePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.updatePurchase,
+    onSuccess: () => {
+      refetch()
+    }
+  })
+
   useEffect(() => {
-    setExtendedPurchases(
-      purchasesInCart?.map((purchase) => ({
-        ...purchase,
-        checked: false,
-        disabled: false
-      })) || []
-    )
+    setExtendedPurchases((prev) => {
+      const extendedPurchasesObject = keyBy(prev, '_id')
+      return (
+        purchasesInCart?.map((purchase) => ({
+          ...purchase,
+          disabled: false,
+          checked: Boolean(extendedPurchasesObject[purchase._id]?.checked)
+        })) || []
+      )
+    })
   }, [purchasesInCart])
 
   //handleChecked
-  const handleChecked = (productIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChecked = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtendedPurchases(
       produce((draft) => {
-        draft[productIndex].checked = event.target.checked
+        draft[purchaseIndex].checked = event.target.checked
       })
     )
   }
@@ -55,7 +69,30 @@ export default function Cart() {
       }))
     )
   }
-  console.log(purchasesInCart)
+  // console.log(purchasesInCart)
+
+  //handleTypeQuantity  : nhập số vào ô input
+
+  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+      })
+    )
+  }
+
+  //handleQuantity   : tăng giảm - +
+  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
+    if (enable) {
+      const purchase = extendedPurchases[purchaseIndex]
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[purchaseIndex].disabled = true
+        })
+      )
+      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+    }
+  }
 
   return (
     <div className='bg-neutral-100 py-16'>
@@ -91,7 +128,7 @@ export default function Cart() {
               {extendedPurchases?.map((purchase, index) => (
                 <div
                   key={purchase._id}
-                  className='mb-5 grid grid-cols-12 rounded-sm border border-gray-200 bg-white py-5 px-4 text-center text-sm text-gray-500 first:mt-0'
+                  className='mb-5 grid grid-cols-12 items-center rounded-sm border border-gray-200 bg-white py-5 px-4 text-center text-sm text-gray-500 first:mt-0'
                 >
                   <div className='col-span-6'>
                     <div className='flex'>
@@ -144,6 +181,19 @@ export default function Cart() {
                           max={purchase.product.quantity}
                           value={purchase.buy_count}
                           classNameWrapper='flex items-center'
+                          onIncrease={(value) => handleQuantity(index, value, value <= purchase.product.quantity)} // tăng số lượng
+                          onDecrease={(value) => handleQuantity(index, value, value >= 1)} // giảm số lương
+                          onType={handleTypeQuantity(index)}
+                          onFocusOut={(value) =>
+                            handleQuantity(
+                              index,
+                              value,
+                              value >= 1 &&
+                                value <= purchase.product.quantity &&
+                                value != (purchasesInCart as Purchase[])[index].buy_count
+                            )
+                          }
+                          disabled={purchase.disabled}
                         />
                       </div>
                       <div className='col-span-1'>

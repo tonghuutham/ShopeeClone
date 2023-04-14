@@ -10,7 +10,8 @@ import { AppProvider } from './contexts/app.context'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      retry: 0 // bị lỗi thì toast chỉ show 1 lần
     }
   }
 })

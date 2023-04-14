@@ -52,6 +52,12 @@ class Http {
           const message = data.message || error.message
           toast.error(message)
         }
+        // bị lỗi tokrn k đúng hay token hết hạn thì status = HttpStatusCode.Unauthorized =401
+        // thì clear ở localstorage và đồng thời clear ở context
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          clearLS()
+          // window.location.reload()
+        }
         return Promise.reject(error)
       }
     )

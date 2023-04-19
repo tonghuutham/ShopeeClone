@@ -6,7 +6,8 @@ import { AppContext } from 'src/contexts/app.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { purchaseStatus } from 'src/constants/purchase'
-import userImage from 'src/assets/images/user.svg'
+
+import { getAvatarUrl } from 'src/utils/utils'
 
 export default function NavHeader() {
   const queryClient = useQueryClient() // queryClient của main.tsx
@@ -88,12 +89,12 @@ export default function NavHeader() {
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
             <img
               // src='https://znews-photo.zingcdn.me/w660/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg'
-              src={profile?.avatar || userImage}
+              src={getAvatarUrl(profile?.avatar)}
               alt='avatar'
               className='h-full w-full rounded-full object-cover'
             />
           </div>
-          <div className=''>{profile?.email}</div>
+          <div className=''>{profile?.name || profile?.email}</div>
         </Popover>
       )}
 

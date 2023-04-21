@@ -1,3 +1,11 @@
+// -1: Sản phẩm đang trong giỏ hàng
+// 0: Tất cả sản phâm
+// 1: Sản phẩm đang đợi xác nhận từ chủ shop
+// 2: Sản phẩm đang được lấy hàng
+// 3: Sản phẩm đang vận chuyển
+// 4: San phẩm đã được giao
+// 5: Sản phẩm đã bị hủy
+
 export const purchaseStatus = {
   inCart: -1,
   all: 0,

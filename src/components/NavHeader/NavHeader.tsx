@@ -5,7 +5,7 @@ import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
-import { purchaseStatus } from 'src/constants/purchase'
+import { purchasesStatus } from 'src/constants/purchase'
 
 import { getAvatarUrl } from 'src/utils/utils'
 
@@ -18,7 +18,7 @@ export default function NavHeader() {
     onSuccess: () => {
       setIsAuthenticated(false)
       setProfile(null)
-      queryClient.removeQueries({ queryKey: ['purchases', { status: purchaseStatus.inCart }] })
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
     }
   })
   const handleLogout = () => {

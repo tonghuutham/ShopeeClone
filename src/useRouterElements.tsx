@@ -1,20 +1,23 @@
-import React, { useContext } from 'react'
+import React, { Suspense, lazy, useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { AppContext } from './contexts/app.context'
 import MainLayout from './layouts/MainLayout'
 import RegisterLayout from './layouts/RegisterLayout'
-import Login from './pages/Login'
-import ProductList from './pages/ProductList'
-import Register from './pages/Register'
 import path from './constants/path'
-import ProductDetail from './pages/ProductDetail'
-import Cart from './pages/Cart'
 import CartLayout from './layouts/CartLayout'
 import UserLayout from './pages/User/layouts/UserLayout'
-import ChangePassword from './pages/User/pages/ChangePassword'
-import HistoryPurchase from './pages/User/pages/HistoryPurchase'
-import Profile from './pages/User/pages/Profile'
-import NotFound from './pages/NotFound'
+
+//lazy cho phép bạn trì hoãn việc tải mã của thành phần cho đến khi nó được hiển thị lần đầu tiên.
+//<Suspense> cho phép bạn hiển thị dự phòng cho đến khi phần tử con của nó tải xong.
+const Login = lazy(() => import('./pages/Login'))
+const ProductList = lazy(() => import('./pages/ProductList'))
+const Register = lazy(() => import('./pages/Register'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const Cart = lazy(() => import('./pages/Cart'))
+const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
+const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase'))
+const Profile = lazy(() => import('./pages/User/pages/Profile'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 // xét quyền truy cập : đã login hay chưa . Nếu chưa thì bắt login . đã login rồi thì k cần đến trang login và register nữa
 
@@ -38,7 +41,9 @@ export default function useRouterElements() {
       path: '/',
       element: (
         <MainLayout>
-          <ProductList />
+          <Suspense>
+            <ProductList />
+          </Suspense>
         </MainLayout>
       )
     },
@@ -46,7 +51,9 @@ export default function useRouterElements() {
       path: path.productDetail,
       element: (
         <MainLayout>
-          <ProductDetail />
+          <Suspense>
+            <ProductDetail />
+          </Suspense>
         </MainLayout>
       )
     },
@@ -58,7 +65,9 @@ export default function useRouterElements() {
           path: path.cart,
           element: (
             <CartLayout>
-              <Cart />
+              <Suspense>
+                <Cart />
+              </Suspense>
             </CartLayout>
           )
         },
@@ -72,15 +81,27 @@ export default function useRouterElements() {
           children: [
             {
               path: path.profile,
-              element: <Profile />
+              element: (
+                <Suspense>
+                  <Profile />
+                </Suspense>
+              )
             },
             {
               path: path.changePassword,
-              element: <ChangePassword />
+              element: (
+                <Suspense>
+                  <ChangePassword />
+                </Suspense>
+              )
             },
             {
               path: path.historyPurchase,
-              element: <HistoryPurchase />
+              element: (
+                <Suspense>
+                  <HistoryPurchase />
+                </Suspense>
+              )
             }
           ]
         }
@@ -94,7 +115,9 @@ export default function useRouterElements() {
           path: path.login,
           element: (
             <RegisterLayout>
-              <Login />
+              <Suspense>
+                <Login />
+              </Suspense>
             </RegisterLayout>
           )
         },
@@ -102,7 +125,9 @@ export default function useRouterElements() {
           path: path.register,
           element: (
             <RegisterLayout>
-              <Register />
+              <Suspense>
+                <Register />
+              </Suspense>
             </RegisterLayout>
           )
         }
@@ -112,7 +137,9 @@ export default function useRouterElements() {
       path: '*',
       element: (
         <MainLayout>
-          <NotFound />
+          <Suspense>
+            <NotFound />
+          </Suspense>
         </MainLayout>
       )
     }

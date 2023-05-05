@@ -34,7 +34,7 @@ export default function ChangePassword() {
     // console.log(data)
     try {
       const res = await updateProfileMutation.mutateAsync(omit(data, ['confirm_password']))
-      toast.success(rep.data.message)
+      toast.success(res.data.message)
       reset()
     } catch (error) {
       if (isAxiosUnprocessableEntity<ErrorResponse<FormDataPassword>>(error)) {

@@ -11,7 +11,7 @@ import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/apis/purchase.api'
 
-import { purchaseStatus } from 'src/constants/purchase'
+import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
 import path from 'src/constants/path'
 
@@ -117,7 +117,7 @@ export default function ProductDetail() {
         onSuccess: (data) => {
           toast.success(data.data.message, { autoClose: 2000 }) // khi thêm vào giỏ hàng thành công thì nó sẽ hiện ra div thêm sản phẩm thành công  ,autoClose : thời gian div chạy nhanh hay chậm
           queryClient.invalidateQueries({
-            queryKey: ['purchases', { status: purchaseStatus.inCart }]
+            queryKey: ['purchases', { status: purchasesStatus.inCart }]
           })
         }
       }

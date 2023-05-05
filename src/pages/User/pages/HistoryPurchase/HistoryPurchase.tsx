@@ -4,23 +4,23 @@ import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
 import path from 'src/constants/path'
-import { purchaseStatus } from 'src/constants/purchase'
+import { purchasesStatus } from 'src/constants/purchase'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
 const purchaseTabs = [
-  { status: purchaseStatus.all, name: 'Tất cả' },
-  { status: purchaseStatus.waitForConfirmation, name: 'Chờ xác nhận' },
-  { status: purchaseStatus.waitForGetting, name: 'Đang lấy hàng' },
-  { status: purchaseStatus.inProgress, name: 'Đang vận chuyển' },
-  { status: purchaseStatus.delivered, name: 'Đã được giao' },
-  { status: purchaseStatus.cancalled, name: 'Đã bị hủy' }
+  { status: purchasesStatus.all, name: 'Tất cả' },
+  { status: purchasesStatus.waitForConfirmation, name: 'Chờ xác nhận' },
+  { status: purchasesStatus.waitForGetting, name: 'Đang lấy hàng' },
+  { status: purchasesStatus.inProgress, name: 'Đang vận chuyển' },
+  { status: purchasesStatus.delivered, name: 'Đã được giao' },
+  { status: purchasesStatus.cancelled, name: 'Đã bị hủy' }
 ]
 
 export default function HistoryPurchase() {
   const queryParams: { status?: string } = useQueryParams()
-  const status: number = Number(queryParams.status) || purchaseStatus.all
+  const status: number = Number(queryParams.status) || purchasesStatus.all
 
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status }],

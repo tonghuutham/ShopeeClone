@@ -10,7 +10,7 @@ import purchaseApi from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 import path from 'src/constants/path'
-import { purchaseStatus } from 'src/constants/purchase'
+import { purchasesStatus } from 'src/constants/purchase'
 import { AppContext } from 'src/contexts/app.context'
 import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
@@ -19,8 +19,8 @@ export default function Cart() {
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext) //state checked
   const queryClient = useQueryClient() // queryClient của main.tsx
   const { data: purchasesInCartData, refetch } = useQuery({
-    queryKey: ['purchases', { status: purchaseStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: purchaseStatus.inCart })
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
 
   const location = useLocation() // từ navigation ProductDetal

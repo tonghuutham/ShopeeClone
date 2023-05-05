@@ -6,12 +6,12 @@
 // 4: San phẩm đã được giao
 // 5: Sản phẩm đã bị hủy
 
-export const purchaseStatus = {
+export const purchasesStatus = {
   inCart: -1,
   all: 0,
   waitForConfirmation: 1,
   waitForGetting: 2,
   inProgress: 3,
   delivered: 4,
-  cancalled: 5
-}
+  cancelled: 5
+} as const

@@ -7,7 +7,7 @@ import { AppContext } from 'src/contexts/app.context'
 
 import Popover from '../Popover'
 
-import { purchaseStatus } from 'src/constants/purchase'
+import { purchasesStatus } from 'src/constants/purchase'
 import purchaseApi from 'src/apis/purchase.api'
 import { formatCurrency } from 'src/utils/utils'
 import NavHeader from '../NavHeader'
@@ -22,8 +22,8 @@ export default function Header() {
   // Nên các query này sẽ không bị inactive =>không bị gọi lại => không cân phải set stale : infinite
 
   const { data: purchasesInCartData } = useQuery({
-    queryKey: ['purchases', { status: purchaseStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: purchaseStatus.inCart }),
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
     enabled: isAuthenticated // khi logout thì k gọi lại api
   })
 

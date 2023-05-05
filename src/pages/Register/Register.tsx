@@ -3,7 +3,9 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { Omit, omit } from 'lodash'
+
+import omit from 'lodash/omit'
+
 import Input from 'src/components/Input'
 import { schema, Schema } from 'src/utils/rules'
 import authApi from 'src/apis/auth.api'

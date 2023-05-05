@@ -2,7 +2,7 @@
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 // eslint-disable-next-line import/no-named-as-default
 import produce, { current } from 'immer'
-import { keyBy, result } from 'lodash'
+import keyBy from 'lodash/keyBy'
 import React, { useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'

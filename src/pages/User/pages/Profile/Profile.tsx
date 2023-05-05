@@ -13,7 +13,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { setProfileToLS } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
-import { Omit } from 'lodash'
+
 import InputFile from 'src/components/InputFile'
 
 function Info() {

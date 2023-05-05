@@ -14,6 +14,7 @@ import UserLayout from './pages/User/layouts/UserLayout'
 import ChangePassword from './pages/User/pages/ChangePassword'
 import HistoryPurchase from './pages/User/pages/HistoryPurchase'
 import Profile from './pages/User/pages/Profile'
+import NotFound from './pages/NotFound'
 
 // xét quyền truy cập : đã login hay chưa . Nếu chưa thì bắt login . đã login rồi thì k cần đến trang login và register nữa
 
@@ -106,6 +107,14 @@ export default function useRouterElements() {
           )
         }
       ]
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <NotFound />
+        </MainLayout>
+      )
     }
   ])
   return routerElement

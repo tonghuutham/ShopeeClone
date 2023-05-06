@@ -14,6 +14,7 @@ import purchaseApi from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
 import path from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -32,6 +33,8 @@ export default function ProductDetail() {
   const [activeImage, setActiveImage] = useState('') // hover chuột vào ảnh slide thì nó sẽ active
 
   const imageRef = useRef<HTMLImageElement>(null)
+
+  const { t } = useTranslation(['product'])
 
   const currentImages = useMemo(
     () => (product ? product.images.slice(...curentIndexImages) : []),
@@ -243,7 +246,9 @@ export default function ProductDetail() {
                   max={product.quantity}
                   value={buyCount}
                 />
-                <div className='ml-6 text-sm text-gray-500'>{product.quantity} số lượng có sẵn</div>
+                <div className='ml-6 text-sm text-gray-500'>
+                  {product.quantity} {t('product:available')}
+                </div>
               </div>
 
               {/* // Thêm vào giỏ hàng + Mua ngay */}

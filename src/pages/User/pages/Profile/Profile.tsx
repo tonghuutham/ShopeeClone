@@ -15,6 +15,7 @@ import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 
 import InputFile from 'src/components/InputFile'
+import { Helmet } from 'react-helmet-async'
 
 function Info() {
   const {
@@ -24,6 +25,10 @@ function Info() {
   } = useFormContext<FormDataProfile>()
   return (
     <Fragment>
+      <Helmet>
+        <title> Shopee Clone</title>
+        <meta name='description' content='Đây là dự án Shopee Clone' />
+      </Helmet>
       {/* Tên  */}
       <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
         <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>

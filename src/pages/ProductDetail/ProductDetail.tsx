@@ -238,18 +238,18 @@ export default function ProductDetail() {
                 <div className='mx-4 h-4 w-[1px] bg-gray-300'></div>
                 <div>
                   <span className=''>{formatNumberToSocialStyle(product.sold)}</span>
-                  <span className='ml-1 text-gray-500'>Đã bán</span>
+                  <span className='ml-1 text-gray-500'>{t('product:Sold')}</span>
                 </div>
               </div>
               <div className='mt-8 flex items-center bg-gray-50 px-5 py-4'>
                 <div className='text-gray-500 line-through'>đ{formatCurrency(product.price_before_discount)}</div>
                 <div className='ml-3 text-3xl font-medium text-orange'>đ{formatCurrency(product.price)}</div>
                 <div className='ml-4 rounded-sm bg-orange px-1 py-[2px] text-sm font-semibold uppercase text-white'>
-                  {rateSale(product.price_before_discount, product.price)} GIẢM
+                  {rateSale(product.price_before_discount, product.price)} {t('product:OFF')}
                 </div>
               </div>
               <div className='mt-8 flex items-center'>
-                <div className='capitalize text-gray-500'>Số lượng</div>
+                <div className='capitalize text-gray-500'>{t('product:Quantity')}</div>
 
                 {/* // QuantityController */}
                 <QuantityController
@@ -309,13 +309,13 @@ export default function ProductDetail() {
                       ></line>
                     </g>
                   </svg>
-                  Thêm vào giỏ hàng
+                  {t('product:AddToCart')}
                 </button>
                 <button
                   onClick={buyNow}
                   className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize  text-white shadow-sm outline-none hover:bg-opacity-80'
                 >
-                  Mua ngay
+                  {t('product:BuyNow')}
                 </button>
               </div>
             </div>
@@ -327,7 +327,9 @@ export default function ProductDetail() {
       <div className='mt-8'>
         <div className='container'>
           <div className=' bg-white p-4 shadow'>
-            <div className='rounded bg-gray-50 p-4 text-lg  uppercase text-slate-700'>Mô tả sản phẩm</div>
+            <div className='rounded bg-gray-50 p-4 text-lg  uppercase text-slate-700'>
+              {t('product:ProductDescription')}
+            </div>
             <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
               <div
                 dangerouslySetInnerHTML={{
@@ -342,7 +344,7 @@ export default function ProductDetail() {
       {/* //  CÓ THỂ BẠN CŨNG THÍCH */}
       <div className='mt-8'>
         <div className='container'>
-          <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
+          <div className='uppercase text-gray-400'>{t('product:YOUMAYALSOLIKE')}</div>
           {productsData && (
             <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
               {productsData.data.data.products.map((product) => (

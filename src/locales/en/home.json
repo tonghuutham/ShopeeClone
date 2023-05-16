@@ -1,6 +1,23 @@
 {
   "aside filter": {
-    "all categories": "All categories",
-    "filter search": "Filter"
+    "allCategories": "All Categories",
+    "filterSearch": "Filter",
+    "PriceRange": "Price Range",
+    "Apply": "Apply",
+    "Rating": "Rating",
+    "ClearAll": "Clear All",
+    "&Up": "& Up",
+    "Min": "đ Min",
+    "Max": "đ Max",
+    "SortBy": "Sort by",
+    "Popular": "Popular",
+    "Latest": "Latest",
+    "TopSales": "Top Sales",
+    "Price": "Price",
+    "LowToHigh": "Price: Low to High",
+    "HighToLow": "Price: High to Low",
+    "SellerCentre": "Seller Centre",
+    "Download": "Download",
+    "Follow": "Follow us on"
   }
 }

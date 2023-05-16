@@ -81,7 +81,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       {/* Tất Cả Danh Mục */}
       <Link
         to={path.home}
-        className={classNames('flex items-center font-bold', {
+        className={classNames('flex items-center font-bold uppercase', {
           'text-orange': !category
         })}
       >
@@ -98,7 +98,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             </g>
           </g>
         </svg>
-        {t('aside filter.all categories')}
+        {t('aside filter.allCategories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
 
@@ -150,11 +150,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             ></polyline>
           </g>
         </svg>
-        {t('aside filter.filter search')}
+        {t('aside filter.filterSearch')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
-        <div>Khoảng giá</div>
+        <div>{t('aside filter.PriceRange')}</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
             <Controller
@@ -164,7 +164,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 return (
                   <InputNumber
                     classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
-                    placeholder='đ Từ'
+                    placeholder={t('aside filter.Min')}
                     classNameError='hidden'
                     type='text'
                     className='grow'
@@ -201,7 +201,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 return (
                   <InputNumber
                     classNameInput='w-full border border-gray-200 p-1 outline-none focus:border-gray-400 focus:shadow-sm'
-                    placeholder='đ Đến'
+                    placeholder={t('aside filter.Max')}
                     type='text'
                     classNameError='hidden'
                     className='grow'
@@ -218,14 +218,14 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
           </div>
           <div className='mt-1 min-h-[1.25rem] text-center text-sm text-orange '>{errors.price_min?.message}</div>
           <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/75'>
-            Áp Dụng
+            {t('aside filter.Apply')}
           </Button>
         </form>
       </div>
 
       {/* Đánh giá */}
       <div className='my-4 h-[1px] bg-gray-300' />
-      <div className='text-sm'>Đánh Giá</div>
+      <div className='text-sm'>{t('aside filter.Rating')}</div>
 
       {/* RatingStarts   */}
       <RatingStar queryConfig={queryConfig} />
@@ -236,7 +236,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         onClick={handleRemoveAll}
         className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/75'
       >
-        Xóa Tất Cả
+        {t('aside filter.ClearAll')}
       </Button>
     </div>
   )

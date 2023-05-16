@@ -14,6 +14,7 @@ export default function NavHeader() {
   const queryClient = useQueryClient() // queryClient của main.tsx
   const { isAuthenticated, setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const { i18n } = useTranslation()
+  const { t } = useTranslation('home')
 
   const currentLanguage = locales[i18n.language as keyof typeof locales]
 
@@ -35,11 +36,15 @@ export default function NavHeader() {
   return (
     <div className='flex justify-between'>
       <div className='flex '>
-        <div className='flex cursor-pointer items-center py-1 hover:text-gray-300'>Kênh người bán</div>
+        <div className='flex cursor-pointer items-center py-1 hover:text-gray-300'>
+          {t('aside filter.SellerCentre')}
+        </div>
         <div className='ml-3 mt-1 flex h-4 items-center justify-center border-r-[1px] border-r-white/40' />
-        <div className='ml-3 flex cursor-pointer items-center py-1 hover:text-gray-300'>Trở thành người bán shopee</div>
+        <div className='ml-3 flex cursor-pointer items-center py-1 hover:text-gray-300'>
+          {t('aside filter.Download')}
+        </div>
         <div className='ml-3 mt-1 flex h-4 items-center justify-center border-r-[1px] border-r-white/40' />
-        <div className='ml-3 flex cursor-pointer items-center py-1 hover:text-gray-300'>Kết nối</div>
+        <div className='ml-3 flex cursor-pointer items-center py-1 hover:text-gray-300'>{t('aside filter.Follow')}</div>
       </div>
       <div className='flex'>
         <Popover

@@ -1,6 +1,23 @@
 {
   "aside filter": {
-    "all categories": "Tất cả danh mục",
-    "filter search": "Bộ lọc tìm kiếm"
+    "allCategories": "Tất cả danh mục",
+    "filterSearch": "Bộ lọc tìm kiếm",
+    "PriceRange": " Khoảng giá",
+    "Apply": "Áp dụng",
+    "Rating": "Đánh giá",
+    "ClearAll": "Xóa tất cả",
+    "&Up": "trở lên",
+    "Min": "đ Từ",
+    "Max": "đ Đến",
+    "SortBy": "Sắp xếp theo",
+    "Popular": "Phổ Biến",
+    "Latest": "Mới Nhất",
+    "TopSales": "Bán Chạy",
+    "Price": "Giá",
+    "LowToHigh": "Giá: Thấp Đến Cao",
+    "HighToLow": "Giá: Cao Đến Thấp",
+    "SellerCentre": "Kênh người bán",
+    "Download": "Tải ứng dung",
+    "Follow": "Kết nối"
   }
 }

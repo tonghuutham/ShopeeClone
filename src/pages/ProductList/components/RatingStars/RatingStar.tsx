@@ -1,6 +1,7 @@
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 /**
  * index 0 : Có 5 cái màu vàng tương ứng từ indexStart 0 -4 đều màu vàng
@@ -19,6 +20,7 @@ interface Props {
 
 export default function RatingStar({ queryConfig }: Props) {
   const navigate = useNavigate()
+  const { t } = useTranslation('home')
 
   const handleFitleStart = (ratingFilter: number) => {
     navigate({
@@ -90,7 +92,7 @@ export default function RatingStar({ queryConfig }: Props) {
                     </svg>
                   )
                 })}
-              {index !== 0 && <span className='ml-1 text-center'>trở lên</span>}
+              {index !== 0 && <span className='ml-1 text-center'>{t('aside filter.&Up')}</span>}
             </div>
           </li>
         ))}
